@@ -1,4 +1,12 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const booksRoutes = require('./routes/books');
+
+mongoose.connect('mongodb+srv://Npetstud:9Avril1992@cluster1.unj8ahs.mongodb.net/?retryWrites=true&w=majority"',
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !')); 
 
 const app = express();
 
@@ -11,34 +19,10 @@ app.use((req, res, next) => {
   next();
 });
 
-
-app.post('/api/books', (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: 'Livre Ajouté !!'
-  });
-}); 
+app.use('/api/books', booksRoutes);
 
 
-app.get('/api/books', (req, res, next) => {
-  const Book = [
-     {
-      userId : 'String',
-      title : 'String', 
-      author : 'String', 
-      imageUrl : 'String',
-      year: 'Number',
-      genre: 'String',
-      ratings : [
-      {
-      userId : 'String',
-      grade : 'Number',
-      }
-      ],
-      averageRating : 'Number',
-    }
-  ];
-  res.status(200).json(Book);
-});
+
 
 module.exports = app;
+
